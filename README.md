@@ -19,6 +19,16 @@
   <img src="docs/discord-preview.svg" alt="Example Discord status preview" width="720">
 </p>
 
+### Real-world example
+
+This is what the presence looks like in Discord while OpenCode is active:
+
+<p align="center">
+  <img src="docs/Screenshot_20260913_182419.png" alt="OpenCode Discord Rich Presence shown in Discord" width="720">
+</p>
+
+The status updates automatically as your project, language, Git branch, activity, or game changes.
+
 ## What Does It Do?
 
 Instead of a vague status such as **AI coding session**, your friends can see something useful:
