@@ -15,10 +15,6 @@
 
 </div>
 
-<p align="center">
-  <img src="docs/discord-preview.svg" alt="Example Discord status preview" width="720">
-</p>
-
 ### Real-world example
 
 This is what the presence looks like in Discord while OpenCode is active:
