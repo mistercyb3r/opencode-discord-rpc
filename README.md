@@ -1,22 +1,71 @@
+<div align="center">
+
+<img src="docs/opencode-discord-rpc-banner.svg" alt="OpenCode Discord Rich Presence" width="900">
+
 # OpenCode Discord Rich Presence
 
-Dynamic Discord Rich Presence for [OpenCode](https://opencode.ai). It shows the active project, language, framework, branch, Git activity, build/test commands, idle state, and optionally the current Steam game.
+### Show what you are coding in Discord, automatically.
 
-## Requirements
+[![Linux](https://img.shields.io/badge/Linux-supported-7c3aed?style=for-the-badge&logo=linux&logoColor=white)](https://github.com/mistercyb3r/opencode-discord-rpc)
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-22c55e?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![License](https://img.shields.io/badge/license-MIT-f59e0b?style=for-the-badge)](LICENSE)
 
-- Linux with systemd user services
-- Node.js 18+
+**OpenCode Discord Rich Presence** watches your active OpenCode sessions and creates a useful Discord status. It can show your project, programming language, framework, Git branch, changed files, build commands, idle state, and even the game you are playing.
+
+</div>
+
+<p align="center">
+  <img src="docs/discord-preview.svg" alt="Example Discord status preview" width="720">
+</p>
+
+## What Does It Do?
+
+Instead of a vague status such as **AI coding session**, your friends can see something useful:
+
+```text
+OpenCode Programming
+TypeScript + SQL · Next.js · my-project · main · 7 changed
+```
+
+When you start a game, it can switch automatically:
+
+```text
+Gaming
+No Man's Sky
+```
+
+When Discord or the RPC bridge restarts, the service reconnects by itself.
+
+## Before You Start
+
+This project is for Linux users running OpenCode.
+
+You need:
+
+- OpenCode
+- Discord Desktop, or a compatible Discord IPC bridge such as [arRPC](https://github.com/ampen-labs/arrpc)
+- Node.js 18 or newer
 - `sqlite3`
-- Discord desktop or a compatible Discord IPC bridge such as [arRPC](https://github.com/ampen-labs/arrpc)
-- OpenCode using its default database at `~/.local/share/opencode/opencode.db`
+- A Linux desktop using systemd user services
 
-## Discord application
+The installer does not install Discord, OpenCode, or arRPC for you.
 
-1. Create an application at <https://discord.com/developers/applications>.
-2. Copy its Application ID.
-3. Add image assets under **Rich Presence → Art Assets** if you want custom artwork.
+## Quick Install
 
-## Install
+### 1. Create a Discord application
+
+Open the [Discord Developer Portal](https://discord.com/developers/applications):
+
+1. Click **New Application**.
+2. Give it a name, for example `OpenCode Presence`.
+3. Open **General Information**.
+4. Copy the **Application ID**.
+
+You do not need a bot or a Discord token.
+
+### 2. Install the presence service
+
+Open a terminal and paste:
 
 ```bash
 git clone https://github.com/mistercyb3r/opencode-discord-rpc.git
@@ -24,13 +73,71 @@ cd opencode-discord-rpc
 ./install.sh
 ```
 
-Edit `~/.config/opencode-rpc/config.json` and replace `YOUR_DISCORD_APPLICATION_ID` with your Application ID. Restart the service:
+### 3. Add your Application ID
+
+Open the generated config file:
+
+```bash
+nano ~/.config/opencode-rpc/config.json
+```
+
+Replace:
+
+```json
+"clientId": "YOUR_DISCORD_APPLICATION_ID"
+```
+
+with your real Application ID, save the file, then restart:
 
 ```bash
 systemctl --user restart opencode-rpc.service
 ```
 
-If your Discord bridge is not already running, install and start arRPC separately. The included service starts after `arrpc.service` when available, but does not install Discord or the bridge.
+Open Discord, start OpenCode inside a project, and your presence should appear within about 15 seconds.
+
+## arRPC
+
+On Linux, Discord IPC may require [arRPC](https://github.com/ampen-labs/arrpc). If you already have an `arrpc.service`, this project starts after it automatically.
+
+If Discord presence does not appear, check that the bridge is running:
+
+```bash
+systemctl --user status arrpc.service
+```
+
+## What It Detects
+
+- Active OpenCode project and session
+- Project name without exposing the full path
+- Git branch
+- Changed file count and line statistics
+- Up to two programming languages
+- Frameworks and tools such as Next.js, React, Tauri, Rust, Python, Go, Astro, Angular, Electron, Vite, Docker, CMake, Make, and more
+- Build and test commands such as `cargo test`, `pytest`, `pnpm build`, and `docker compose`
+- Idle coding sessions
+- Selected Steam games
+- Discord/arRPC disconnects and reconnects
+
+## Privacy
+
+The presence shows project and branch names only. It does **not** send:
+
+- Absolute file paths
+- File contents
+- Commit messages
+- Source code
+- Discord credentials or tokens
+
+You can hide project and Git information in `~/.config/opencode-rpc/config.json`:
+
+```json
+{
+  "clientId": "YOUR_DISCORD_APPLICATION_ID",
+  "showProject": false,
+  "showBranch": false,
+  "showGitStats": false
+}
+```
 
 ## Configuration
 
@@ -46,17 +153,42 @@ If your Discord bridge is not already running, install and start arRPC separatel
 }
 ```
 
-Project names and branch names are shown, but absolute paths, commit messages, and file contents are not sent to Discord. Set `showProject` or `showBranch` to `false` for more privacy.
+| Setting | What it changes |
+| --- | --- |
+| `clientId` | Your Discord Application ID |
+| `updateIntervalSeconds` | How often Discord is refreshed |
+| `idleAfterMinutes` | When the status becomes idle |
+| `showProject` | Shows the project folder name |
+| `showBranch` | Shows the current Git branch |
+| `showGitStats` | Shows changed files and line counts |
+| `detectGames` | Switches the status while a supported game runs |
 
 ## Troubleshooting
 
+Check the service:
+
 ```bash
 systemctl --user status opencode-rpc.service
+```
+
+Watch live logs:
+
+```bash
 journalctl --user -u opencode-rpc.service -f
 ```
 
-The service reconnects automatically when Discord or the RPC bridge restarts.
+Restart after changing configuration:
+
+```bash
+systemctl --user restart opencode-rpc.service
+```
+
+If the status is missing, check these three things:
+
+1. Discord Desktop is open.
+2. arRPC or another Discord IPC bridge is running.
+3. Your Application ID is correct in `~/.config/opencode-rpc/config.json`.
 
 ## License
 
-MIT
+MIT. See [LICENSE](LICENSE).
