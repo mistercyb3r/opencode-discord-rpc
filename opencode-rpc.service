@@ -6,7 +6,7 @@ Wants=arrpc.service
 [Service]
 Type=simple
 WorkingDirectory=%h/.local/share/opencode-rpc
-ExecStart=/usr/bin/env node %h/.local/share/opencode-rpc/index.js
+ExecStart=__NODE_PATH__ %h/.local/share/opencode-rpc/index.js
 Restart=on-failure
 RestartSec=5
 

@@ -9,6 +9,7 @@
 [![Linux](https://img.shields.io/badge/Linux-supported-7c3aed?style=for-the-badge&logo=linux&logoColor=white)](https://github.com/mistercyb3r/opencode-discord-rpc)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-22c55e?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/license-MIT-f59e0b?style=for-the-badge)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/mistercyb3r/opencode-discord-rpc?style=for-the-badge&color=ec4899)](https://github.com/mistercyb3r/opencode-discord-rpc/releases)
 
 **OpenCode Discord Rich Presence** watches your active OpenCode sessions and creates a useful Discord status. It can show your project, programming language, framework, Git branch, changed files, build commands, idle state, and even the game you are playing.
 
@@ -73,6 +74,8 @@ cd opencode-discord-rpc
 ./install.sh
 ```
 
+The installer checks your Node.js and SQLite setup, offers to ask for your Discord Application ID, installs the service, and starts it when the ID is provided.
+
 ### 3. Add your Application ID
 
 Open the generated config file:
@@ -94,6 +97,23 @@ systemctl --user restart opencode-rpc.service
 ```
 
 Open Discord, start OpenCode inside a project, and your presence should appear within about 15 seconds.
+
+## Supported Linux systems
+
+The project is designed for systemd-based Linux desktops and has been tested on Arch-family systems such as CachyOS. The same setup should work on Fedora, Ubuntu, and Debian when Node.js 18+, `sqlite3`, systemd user services, and Discord/arRPC are installed.
+
+Install prerequisites with your distribution:
+
+```bash
+# Arch / CachyOS
+sudo pacman -S nodejs npm sqlite
+
+# Fedora
+sudo dnf install nodejs npm sqlite
+
+# Ubuntu / Debian
+sudo apt install nodejs npm sqlite3
+```
 
 ## arRPC
 
