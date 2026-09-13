@@ -1,0 +1,9 @@
+{
+  "name": "opencode-discord-rpc",
+  "version": "1.0.0",
+  "description": "Dynamic Discord Rich Presence for OpenCode sessions",
+  "private": false,
+  "license": "MIT",
+  "engines": { "node": ">=18" },
+  "dependencies": { "discord-rpc": "^4.0.1" }
+}

@@ -1,0 +1,14 @@
+[Unit]
+Description=OpenCode Discord Rich Presence
+After=arrpc.service
+Wants=arrpc.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h/.local/share/opencode-rpc
+ExecStart=/usr/bin/env node %h/.local/share/opencode-rpc/index.js
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,9 @@
+{
+  "clientId": "YOUR_DISCORD_APPLICATION_ID",
+  "updateIntervalSeconds": 15,
+  "idleAfterMinutes": 20,
+  "showProject": true,
+  "showBranch": true,
+  "showGitStats": true,
+  "detectGames": true
+}
